@@ -1,0 +1,147 @@
+<div class="popup loginPop">
+    <div class="page-content">
+        <div class="block" id="loginBlock">
+            <p><a href="#" class="popup-close">بازگشت</a></p>
+            <div class="block-title">ورود به سایت</div>
+            <form id="loginForm">
+                <div class="list no-hairlines">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">ایمیل</div>
+                                <div class="item-input-wrap">
+                                    <input id="txtLoginEmail" type="text" name="email" placeholder="ایمیل">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">رمز عبور</div>
+                                <div class="item-input-wrap">
+                                    <input type="password" name="password" placeholder="رمز عبور">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-75 errorMessage" id="loginMessage"></div>
+                    <div class="col-25">
+                        <div id="btnLogin" class="button button-active">ورود</div>
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="row">
+                        <div class="col-30">
+
+                        </div>
+                        <div class="col-35">
+                            <div id="btnGoRegister" class="button">عضویت در سایت</div>
+                        </div>
+                        <div class="col-35">
+                            <div id="btnGoForget" class="button">فراموشی رمز</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="block hidden" id="forgetBlock">
+            <p><a href="#" class="backLogin">بازگشت</a></p>
+            <div class="block-title">بازیابی رمز</div>
+            <form id="forgetForm">
+                <div class="list no-hairlines">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">ایمیل</div>
+                                <div class="item-input-wrap">
+                                    <input id="txtForgetEmail" type="text" name="email"
+                                           placeholder="رایانامه خود را وارد کنید">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-75 errorMessage" id="forgetMessage"></div>
+                    <div class="col-25">
+                        <div id="btnForget" class="button button-active">بازیابی رمز</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="block hidden" id="registerBlock">
+            <p><a href="#" class="backLogin">بازگشت</a></p>
+            <div class="block-title">ثبت نام در سایت</div>
+            <form id="registerForm">
+                <div class="list no-hairlines">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">نام</div>
+                                <div class="item-input-wrap">
+                                    <input id="txtFname" type="text" name="fname" placeholder="نام">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">نام خانوادگی</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="lname" placeholder="نام خانوادگی">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">ایمیل</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="email" placeholder="ایمیل">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">شماره همراه</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="mobile" placeholder="مثلا 09123334444">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">رمز عبور</div>
+                                <div class="item-input-wrap">
+                                    <input type="password" name="password" placeholder="رمز عبور">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">تکرار رمز</div>
+                                <div class="item-input-wrap">
+                                    <input type="password" name="passwordRep" placeholder="تکرار رمز">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-75 errorMessage" id="registerMessage"></div>
+                    <div class="col-25">
+                        <div id="btnRegister" class="button button-active">ثبت نام</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

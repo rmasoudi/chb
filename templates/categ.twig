@@ -1,0 +1,209 @@
+{% extends 'base.twig' %}
+{% block page_desc %}{{ meta_desc }}{% endblock %}
+{% block page_keywords %}
+    {% if keywords %}
+        {{ keywords }}
+    {% else %}
+        {{ name|replace({' ':','}) }}
+    {% endif %}
+{% endblock %}
+{% block title %}{{ name }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h1 id="categTitle" data-id="{{ id }}" class="block-title block-title-medium"><a class="external"
+                                                                                     href="{{ url }}">{{ name }}</a>
+    </h1>
+    <div class="block inset">
+        <div class="block">
+            <div class="row">
+                <div class="col-100 medium-50" id="sortContainer">
+                    <div class="block-title display-flex justify-content-space-between">مرتب سازی بر اساس</div>
+                    <div class="display-flex flex-direction-row justify-content-right align-items-center"
+                         style="flex-wrap: wrap;align-content: space-between;">
+                        <div data-field="id" data-direction="desc"
+                             class="sortButton button button-raised button-active">جدیدترین
+                        </div>
+                        <div data-field="buy_count" data-direction="desc" style="margin-right: 5px;"
+                             class="sortButton button button-raised">پرفروش ترین
+                        </div>
+                        <div data-field="sell_price" data-direction="asc" style="margin-right: 5px;"
+                             class="sortButton button button-raised">ارزان ترین
+                        </div>
+                        <div data-field="sell_price" data-direction="desc" style="margin-right: 5px;"
+                             class="sortButton button button-raised">گران ترین
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-100 medium-50">
+                    <div class="block-title display-flex justify-content-space-between">محدوده قیمت <span
+                                class="price-value"><span data-val="{{ range.min }}" id="lblFrom"></span> تا <span
+                                    data-val="{{ range.max }}" id="lblTo"></span> تومان</span></div>
+                    <div class="list simple-list inset">
+                        <ul>
+                            <li class="item-row">
+                                <div class="item-cell item-cell-shrink-3">
+                                    <div id="priceFilter" class="range-slider range-slider-init"
+                                         data-dual="true"
+                                         data-min="{{ range.min }}"
+                                         data-max="{{ range.max }}"
+                                         data-step="10000"
+                                         data-value-left="{{ range.min }}"
+                                         data-value-right="{{ range.max }}"
+                                    ></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="productContainer" class="row">
+            {% for product in products %}
+                <div class="col-50 small-33 medium-25 large-20" style="margin-bottom: 40px;">
+                    <a class="external" href="{{ product.name|replace({' ':'-'}) }}-{{ product.id }}-htm">
+                        <div class="categItem">
+                            <img alt="{{ product.name }}" title="{{ product.name }}"
+                                 class="categ-list-image swiper-lazy"
+                                 src="home/{{ product.name }}-{{ product.image_id }}-jpg"/>
+                            <figcaption class="centerText productTitle">{{ product.name }}</figcaption>
+                            <figcaption class="centerText productPrice">{{ product.formatted_price }} تومان</figcaption>
+                            <span class="categProductCode   ">{{ product.code }}</span>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#filterFab").removeClass("hidden");
+            loadFilterPanel();
+            productTemplate = $("#productTemplate");
+            $(".sortButton").click(function () {
+                $(".sortButton").removeClass("button-active");
+                $(this).addClass("button-active");
+                refreshProducts();
+            });
+            $("#lblFrom").html(formatPrice(parseInt($("#lblFrom").data().val)));
+            $("#lblTo").html(formatPrice(parseInt($("#lblTo").data().val)));
+            let slider = app.range.create({
+                el: "#priceFilter"
+            });
+
+
+            $$("#priceFilter").on("range:change", function (e) {
+                let range = app.range.get(e.target);
+                let from = range.value[0];
+                let to = range.value[1];
+                $(".price-value").text(formatPrice(from) + " تا " + formatPrice(to) + " تومان");
+                refreshProducts();
+            });
+        });
+
+        function refreshProducts() {
+            let selected = $(".sortButton.button-active");
+            let field = selected.data().field;
+            let direction = selected.data().direction;
+            let range = app.range.get("#priceFilter");
+            let from = range.value[0];
+            let to = range.value[1];
+            let id = $("#categTitle").data().id;
+            let url = "filter-products?sort_field=" + field + "&sort_direction=" + direction + "&min_price=" + from + "&max_price=" + to + "&categ_id=" + id;
+            app.preloader.show();
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (products) {
+                    app.preloader.hide();
+                    $("#productContainer").html("");
+                    for (let i = 0; i < products.length; i++) {
+                        $("#productContainer").append(getProductItem(products[i]));
+                    }
+                },
+                error: function (response) {
+                    app.preloader.hide();
+                }
+            });
+        }
+
+        function getProductItem(product) {
+            let el = $("<div class='col-50 small-33 medium-25 large-20' style='margin-bottom: 40px;'></div>");
+            let a = $("<a class='external' href='" + product.name.replaceAll(" ", "-") + "-" + product.id + "-htm'></a>");
+            let div = $("<div class='categItem'></div>");
+            let img = $("<img alt='" + product.name + "' title='" + product.name + "' class='categ-list-image swiper-lazy' src='home/" + product.name + "-" + product.image_id + "-jpg'/>");
+            let name = $("<figcaption class='centerText productTitle'>" + product.name + "</figcaption>");
+            let price = $("<figcaption class='centerText productPrice'>" + product.formatted_price + " تومان</figcaption>");
+            let code = $("<span class='categProductCode'>" + product.code + "</span>");
+            div.append(img);
+            div.append(name);
+            div.append(price);
+            div.append(code);
+            a.append(div);
+            el.append(a);
+            return el;
+        }
+
+        function loadFilterPanel() {
+            let id = $("#categTitle").data().id;
+            $.ajax({
+                type: "GET",
+                url: "categ_fields?id=" + id,
+                success: function (items) {
+                    $("#filterPanel").html();
+                    let grouped = _.groupBy(items, function (record) {
+                        return record.id;
+                    });
+                    _.each(grouped, function (group) {
+                        if (group[0].type === 1) {
+                            let label = group[0].name;
+                            if (group[0].unit) {
+                                label += " (" + group[0].unit + ")";
+                            }
+                            let title = $("<div class='block-title'>" + label + "</div>");
+                            let block = $("                                    <div class=\"field-filter-slider range-slider range-slider-init\"\n" +
+                                "                                         data-dual=\"true\"\n" +
+                                "                                         data-min=\"" + group[0].min_value + "\"\n" +
+                                "                                         data-max=\"" + group[0].max_value + "\"\n" +
+                                "                                         data-step=\"1\"\n" +
+                                "                                         data-value-left=\"" + group[0].min_value + "\"\n" +
+                                "                                         data-value-right=\"" + group[0].max_value + "\"\n" +
+                                "                                      data-label=\"true\"></div>");
+                            $("#filterPanel").append(title);
+                            $("#filterPanel").append(block);
+                            app.range.create({
+                                el: block
+                            });
+                        } else if (group[0].type === 2) {
+                            let label = group[0].name;
+                            if (group[0].unit) {
+                                label += " (" + group[0].unit + ")";
+                            }
+                            let a = $("<a class='item-link smart-select smart-select-init' data-open-in='sheet'></a>");
+                            let select = $("<select name='" + group[0].name + "' multiple></select>");
+                            for (let i = 0; i < group.length; i++) {
+                                let option = $("<option value='" + group[i].value_id + "'>" + group[i].value + "</option>");
+                                select.append(option);
+                            }
+                            let other = $("<div class='item-content'><div class='item-inner'><div class='item-title'>" + group[0].name + "<div><div><div>");
+                            a.append(select);
+                            a.append(other);
+                            $("#filterPanel").append(a);
+                            app.range.create({
+                                el: block
+                            });
+                        }
+                    });
+                },
+                error: function (response) {
+                    app.preloader.hide();
+                }
+            });
+        }
+    </script>
+{% endblock %}

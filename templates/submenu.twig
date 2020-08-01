@@ -1,0 +1,35 @@
+<div class="list accordion-list">
+    <ul>
+        {% for child in children %}
+            <li class="accordion-item">
+                <a  href="{% if child.children %}#{% else %}{{ child.name|replace({' ':'-'}) }}-{{ child.id }}-html{% endif %}" class="item-content {% if child.children %}item-link{% else %}external{% endif %}">
+                    <div class="item-inner">
+                        <div class="item-title">{{ child.name}}</div>
+                    </div>
+                </a>
+                <div class="accordion-item-content">
+                    <div class="block">
+                        {% if child.children %}
+                            <ul>
+                                {% include "submenu.twig" with {'children':child.children,'root':'0'} %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        {% if root=='0' %}
+            <li class="accordion-item">
+                <a  href="{{ child.name|replace({' ':'-'}) }}-{{ child.id }}-html" class="item-content external">
+                    <div class="item-inner">
+                        <div class="item-title" style="color: #0774aa;">مشاهده همه</div>
+                    </div>
+                </a>
+                <div class="accordion-item-content">
+                    <div class="block">
+                    </div>
+                </div>
+            </li>
+        {% endif %}
+    </ul>
+</div>

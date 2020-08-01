@@ -1,0 +1,69 @@
+{% extends 'base.twig' %}
+{% block title %}بازیابی رمز عبور{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="block-title block-title-medium">تغییر رمز عبور</h1>
+    <div class="block inset">
+        <form id="changePassForm">
+            <input class="hidden" name="hash" value="{{ hash }}">
+            <div class="list no-hairlines">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">رمز عبور</div>
+                            <div class="item-input-wrap">
+                                <input id="txtPass" type="password" name="password" placeholder="رمز جدید را وارد کنید">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">تکرار رمز</div>
+                            <div class="item-input-wrap">
+                                <input id="txtPassRep" type="password" name="passwordRep" placeholder="تکرار رمز">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-75 errorMessage" id="errorMessage"></div>
+                <div class="col-25">
+                    <div id="btnChangePass" class="button button-active">تغییر رمز</div>
+                    <a id="btnMain" class="external hidden" href="/">
+                        <div class="button button-active">رفتن به صفحه اصلی</div>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtPass").focus();
+            $("#btnChangePass").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "change_pass",
+                    data: $("#changePassForm").serialize(),
+                    success: function (response) {
+                        debugger
+                        notify("رمز با موفقیت تغییر یافت");
+                        $("#btnMain").removeClass("hidden");
+                        $("#btnChangePass").addClass("hidden");
+                    },
+                    error: function (response) {
+                        debugger
+                        $("#errorMessage").html(response.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

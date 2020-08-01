@@ -1,0 +1,66 @@
+{% extends 'base.twig' %}
+{% block title %}پروفایل {{ user.fname }} {{ user.lname }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <div class="block inset">
+        <form id="profileForm" action="save-profile" method="post" >
+            <div class="list no-hairlines">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">نام</div>
+                            <div class="item-input-wrap">
+                                <input id="txtFname" type="text" name="fname" placeholder="نام" value="{{ user.fname }}">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">نام خانوادگی</div>
+                            <div class="item-input-wrap">
+                                <input type="text" name="lname" placeholder="نام خانوادگی" value="{{ user.lname }}">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">ایمیل</div>
+                            <div class="item-input-wrap">
+                                <input type="text" name="email" placeholder="ایمیل" value="{{ user.email }}">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">شماره همراه</div>
+                            <div class="item-input-wrap">
+                                <input type="text" name="mobile" placeholder="شماره همراه" value="{{ user.mobile }}">
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-70 errorMessage" id="loginMessage"></div>
+                <div class="col-30">
+                    <button type="submit" class="button button-active">ثبت تغییرات</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtFname").focus();
+        });
+    </script>
+{% endblock %}

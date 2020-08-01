@@ -1,0 +1,150 @@
+{% extends 'base.twig' %}
+{% block page_desc %}{{ product.meta_desc }}{% endblock %}
+{% block page_keywords %}
+    {% if product.keywords %}
+        {{ product.keywords }}
+    {% else %}
+        {{ product.name|replace({' ':','}) }}
+    {% endif %}
+{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block styles %}
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            imageArray = JSON.parse("{{ image_list | json_encode() }}".replaceAll("&quot;", "\""));
+            photoBrowser = app.photoBrowser.create({
+                photos: imageArray,
+                navbarOfText: "از",
+                popupCloseLinkText: "بستن"
+            });
+            $(".smallImageContainer").click(function () {
+                photoBrowser.open();
+            });
+            $("#btnAddToCart").click(function () {
+                let count = parseInt($("#txtAmount").val());
+                let product = $("#productDetails").data().product;
+                let images = $("#productDetails").data().images;
+                product.amount = count;
+                product.image = "small/" + product.name + "-" + images[0].id + "-jpg";
+                addToCart(product);
+                app.panel.open(".panel-left-1");
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div id="productDetails" class="block inset" data-product="{{ product| json_encode() }}"
+         data-images="{{ images | json_encode() }}">
+        <div class="row">
+            <div class="col-100 medium-33" style="margin-bottom: 40px;">
+                <div class="smallImageContainer">
+                    <a href="#">
+                        <img class="previewImage" alt="{{ product.name }}" title="{{ product.name }}" src="large/{{ product.name }}-{{ images[0].id }}-jpg">
+                    </a>
+                </div>
+                <div class="smallImageContainer">
+                    {% for image in images %}
+                        <a href="#">
+                            <img class="smallImage" alt="{{ product.name }}" title="{{ product.name }}" src="small/{{ product.name }}-{{ image.id }}-jpg">
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-100 medium-33" style="margin-bottom: 40px;">
+                <h1><a class="external"
+                       href="{{ product.name|replace({' ':'-'}) }}-{{ product.id }}-htm">{{ product.name }}</a></h1>
+                <div class="block">
+                    <div style="margin-bottom: 10px;">
+                        <span>دسته بندی: </span>
+                        <span><a class="external"
+                                 href="{{ product.category_name }}-{{ product.category_id }}-html">{{ product.category_name }}</a></span>
+                    </div>
+                    <div>
+                        <span>کد محصول: </span>
+                        <span><a class="external"
+                                 href="{{ product.name|replace({' ':'-'}) }}-{{ product.id }}-htm">{{ product.code }}</a></span>
+                    </div>
+
+                </div>
+                <div class="block-title">مشخصات</div>
+                <div class="block inset">
+                    {% for field in fields %}
+                        <div><span style="color: #515151;">{{ field.name }}:</span><span
+                                    style="color: #006bf7;margin-right: 10px;">
+                                {% if field.value%}
+                                    {{ field.value }}
+                                {% elseif field.enum_value %}
+                                    {{ field.enum_value }}
+                                {% else %}
+                                    {{ field.numeric_value }}
+                                {% endif %} {{ field.unit }}</span></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-100 medium-33" style="margin-bottom: 40px;">
+                <div class="list inset">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                {{ product.formatted_price }} تومان
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    تعداد:
+                                </div>
+                                <div class="item-after">
+                                    <div id="amountStepper" class="stepper stepper-large stepper-raised">
+                                        <div class="stepper-button-minus"></div>
+                                        <div class="stepper-input-wrap">
+                                            <input id="txtAmount" type="text" value="1" readonly/>
+                                        </div>
+                                        <div class="stepper-button-plus"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <button id="btnAddToCart" class="button button-active active-button">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="shop_desc block block-strong inset padding-horizontal">
+            {{ common.product_default_desc|replace({'\n':'<br/>'|raw})|raw }}
+        </div>
+        <div class="block-title homeTitle">محصولات مرتبط</div>
+        <div class="block block-strong inset">
+            <div class="swiper-container product-slider">
+                <div class="swiper-wrapper">
+                    {% for product in related %}
+                        <div class="swiper-slide">
+                            <a class="external" href="{{ product.name|replace({' ':'-'}) }}-{{ product.id }}-htm">
+                                <img alt="{{ product.name }}" title="{{ product.name }}" class="list-image swiper-lazy"
+                                     src="home/{{ product.name }}-{{ product.image_id }}-jpg">
+                                <figcaption class="centerText productTitle">{{ product.name }}</figcaption>
+                                <figcaption class="centerText productPrice">{{ product.formatted_price }} تومان
+                                </figcaption>
+                                <span class="productCode">{{ product.code }}</span>
+                            </a>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

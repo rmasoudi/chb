@@ -1,0 +1,30 @@
+<div id="mainNavbar" class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner sliding">
+        <div class="left">
+            <a class="panel-open link" href="#" data-panel=".panel-right-1">
+                <div class="fas fa-bars"></div>
+            </a>
+        </div>
+        <div class="right">
+            <a class="link sheet-open" href="#" data-sheet=".search-sheet">
+                <div class="fas fa-search"></div>
+            </a>
+            <a class="link panel-open" href="#" data-panel=".panel-left-1">
+                <i id="cart" class="icon fas fa-shopping-cart">
+                    <span id="cartCount" class="badge color-green hidden"></span>
+                </i>
+            </a>
+            {% if user %}
+                <a id="btnUserProfile" class="link hidden popover-open" data-popover=".popover-links" href="#">
+                    <i class="icon fas fa-user"></i>
+                    <span id="lblUser" style="font-size: 11pt;">{{ user.fname }} {{ user.lname }}</span>
+                </a>
+            {% else%}
+                <a id="btnUser" class="link popup-open" href="#" data-popup=".loginPop">
+                    <i class="icon fas fa-user"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

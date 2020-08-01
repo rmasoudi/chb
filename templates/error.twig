@@ -1,0 +1,24 @@
+{% extends 'base.twig' %}
+{% block title %}{{ common.app_title }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <div class="block inset">
+        <div style="display: flex;justify-content: center;align-items: center;">
+            <p>{{ message }}</p>
+        </div>
+        <div style="display: flex;justify-content: center;align-items: center;">
+            <a class="link external" href="/">
+                <button class="button button-active">بازگشت به صفحه اصلی</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+    </script>
+{% endblock %}

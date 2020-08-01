@@ -1,0 +1,99 @@
+{% extends 'base.twig' %}
+{% block page_desc %}{{ common.home_meta_desc }}{% endblock %}
+{% block page_keywords %}{{ common.home_keywords }}{% endblock %}
+{% block title %}{{ common.app_title }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <div class="swiper-container home-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img class="slider-image" src="img/slides/1.jpg">
+            </div>
+            <div class="swiper-slide">
+                <img class="slider-image" src="img/slides/2.jpg">
+            </div>
+        </div>
+    </div>
+    <h1 class="block-title homeTitle">جدیدترین محصولات</h1>
+    <div class="block block-strong inset">
+        <div class="swiper-container product-slider">
+            <div class="swiper-wrapper">
+                {% for product in new_products %}
+                    <div class="swiper-slide">
+                        <a class="external" href="{{ product.name|replace({' ':'-'}) }}-{{ product.id }}-htm">
+                            <img alt="{{ product.name }}" title="{{ product.name }}" class="list-image swiper-lazy" src="home/{{ product.name }}-{{ product.image_id }}-jpg">
+                            <figcaption class="centerText productTitle">{{ product.name }}</figcaption>
+                            <figcaption class="centerText productPrice">{{ product.formatted_price }} تومان</figcaption>
+                            <span class="productCode">{{ product.code }}</span>
+                        </a>
+
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div id="homeTile" class="row">
+            <div class="tile-item col-25">
+                <div class="icon-container">
+                    <div class="tile-icon fas fa-truck"></div>
+                </div>
+                <div class="front tiletext">ارسال به سراسر کشور</div>
+            </div>
+            <div class="tile-item col-25">
+                <div class="icon-container">
+                    <div class="tile-icon fas fa-retweet"></div>
+                </div>
+                <div class="front tiletext">خرید بی واسطه</div>
+            </div>
+            <div class="tile-item col-25">
+                <div class="icon-container">
+                    <div class="tile-icon fas fa-paint-brush"></div>
+                </div>
+                <div class="front tiletext">تنوع رنگ و پارچه</div>
+            </div>
+            <div class="tile-item col-25">
+                <div class="icon-container">
+                    <div class="tile-icon fas fa-check"></div>
+                </div>
+                <div class="front tiletext">کیفیت مناسب</div>
+            </div>
+        </div>
+    </div>
+
+    {% for categ in home_categs %}
+        <a class="external" href="{{ categ[0].category_name|replace({' ':'-'}) }}-{{ categ[0].category_id }}-html">
+            <h1 class="block-title homeTitle">{{ categ[0].category_name }}</h1>
+        </a>
+        <div class="block block-strong inset">
+            <div class="swiper-container product-slider">
+                <div class="swiper-wrapper">
+                    {% for product in categ %}
+                        <div class="swiper-slide">
+                            <a class="external" href="{{ product.product_name|replace({' ':'-'}) }}-{{ product.product_id }}-htm">
+                                <img alt="{{ product.product_name }}" title="{{  product.product_name }}" class="list-image swiper-lazy" src="home/{{ product.product_name }}-{{ product.image_id }}-jpg">
+                                <figcaption class="centerText productTitle">{{ product.product_name }}</figcaption>
+                                <figcaption class="centerText productPrice">{{ product.formatted_price }} تومان
+                                </figcaption>
+                                <span class="productCode">{{ product.code }}</span>
+                            </a>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="shop_desc block block-strong inset padding-horizontal">
+        {{ common.shop_desc }}
+    </div>
+
+{% endblock %}
