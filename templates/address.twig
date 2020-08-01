@@ -1,0 +1,237 @@
+{% extends 'base.twig' %}
+{% block title %}آدرس های  {{ user.fname }} {{ user.lname }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <div class="block inset">
+        <div class="block">
+            <p>برای ویرایش آدرس آن را به چپ بکشید.</p>
+        </div>
+        <div class="list media-list">
+            <ul>
+                {% for address in addresses %}
+                    <li data-id="{{ address.id }}" data-item="{{ address| json_encode() }}" class="swipeout deleted-callback">
+                        <div class="item-content swipeout-content">
+                            <div class="item-inner">
+                                <div class="item-subtitle">{{ address.address }}</div>
+                                {% if address.phone %}
+                                    <div class="item-text">
+                                        شماره ثابت: {{ address.phone }}
+                                    </div>
+                                {% endif %}
+                                <div class="item-text">
+                                    شماره همراه: {{ address.mobile }}
+                                </div>
+                                {% if address.postal_code %}
+                                    <div class="item-text">
+                                        کد پستی: {{ address.postal_code }}
+                                    </div>
+                                {% endif %}
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="swipeout-actions-right">
+                            <a href="#" class="swipeout-delete">حذف</a>
+                            <a class="btnEdit color-blue" href="#">ویرایش</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="fab" style="position: absolute;right: 5px; bottom: 55px;">
+        <a href="#" class="link popup-open" data-popup=".newAddressPop">
+            <i class="fas fa-plus icon socialIcon"></i>
+        </a>
+    </div>
+    <div class="popup newAddressPop">
+        <div class="page-content">
+            <div class="block" id="addressBlock">
+                <p><a href="#" class="popup-close">بازگشت</a></p>
+                <div class="block-title">آدرس جدید</div>
+                <form id="addressForm">
+                    <div class="list no-hairlines">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">آدرس کامل</div>
+                                    <div class="item-input-wrap">
+                                        <textarea  required validate data-error-message="این فیلد الزامی است" id="txtNewAddress" name="address" placeholder="آدرس کامل"></textarea>
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">شماره ثابت</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="phone" placeholder="شماره ثابت">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">شماره همراه</div>
+                                    <div class="item-input-wrap">
+                                        <input id="txtMobile"  required validate data-error-message="این فیلد الزامی است" type="text" name="mobile" placeholder="مثلا 09123334444">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">کد پستی</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="postal_code" placeholder="کد پستی">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-75 errorMessage" id="registerMessage"></div>
+                        <div class="col-25">
+                            <div id="btnAddAddress" class="button button-active">ثبت آدرس</div>
+                        </div>
+                    </div>
+                    <input name="id" value="-1" style="display: none;">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup editAddressPop">
+        <div class="page-content">
+            <div class="block" id="editAddressBlock">
+                <p><a href="#" class="popup-close">بازگشت</a></p>
+                <div class="block-title">ویرایش آدرس</div>
+                <form id="editAddressForm">
+                    <div class="list no-hairlines">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">آدرس کامل</div>
+                                    <div class="item-input-wrap">
+                                        <textarea  required validate data-error-message="این فیلد الزامی است" id="txtEditAddress" name="address" placeholder="آدرس کامل"></textarea>
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">شماره ثابت</div>
+                                    <div class="item-input-wrap">
+                                        <input id="txtEditPhone" type="text" name="phone" placeholder="شماره ثابت">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">شماره همراه</div>
+                                    <div class="item-input-wrap">
+                                        <input required validate data-error-message="این فیلد الزامی است" id="txtEditMobile" type="text" name="mobile" placeholder="مثلا 09123334444">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">کد پستی</div>
+                                    <div class="item-input-wrap">
+                                        <input id="txtEditPostalCode" type="text" name="postal_code" placeholder="کد پستی">
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-75 errorMessage" id="editMessage"></div>
+                        <div class="col-25">
+                            <div id="btnEditAddress" class="button button-active">ثبت آدرس</div>
+                        </div>
+                    </div>
+                    <input id="txtAddressId" name="id" style="display: none;">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $$(".deleted-callback").on("swipeout:deleted", function (a) {
+                let id = $(a.currentTarget).data().id;
+                $.ajax({
+                    type: "GET",
+                    url: "remove_address?id=" + id,
+                    success: function (response) {
+                    },
+                    error: function (response) {
+                    }
+                });
+            });
+            $("#btnAddAddress").click(function () {
+                $("#registerMessage").html("");
+                debugger
+                if($("#txtNewAddress").val().trim()==="" || $("#txtMobile").val().trim()===""){
+                    $("#registerMessage").html("لطفا فیلدهای الزامی را پر کنید.");
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "save_address",
+                    data: $("#addressForm").serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (response) {
+                        $("#registerMessage").html(response.responseJSON.error);
+                    }
+                });
+            });
+            $("#btnEditAddress").click(function () {
+                $("#editMessage").html("");
+                if($("#txtEditAddress").val().trim()==="" || $("#txtEditMobile").val().trim()===""){
+                    $("#editMessage").html("لطفا فیلدهای الزامی را پر کنید.");
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "save_address",
+                    data: $("#editAddressForm").serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (response) {
+                        $("#editMessage").html(response.responseJSON.error);
+                    }
+                });
+            });
+            $(".newAddressPop").on("popup:open", function () {
+                $("#txtNewAddress").focus();
+            });
+            $(".editAddressPop").on("popup:open", function () {
+                $("#txtEditAddress").focus();
+            });
+            $(".btnEdit").click(function () {
+                let parent = $(this).parent().parent();
+                let id=parent.data().id;
+                $("#txtAddressId").val(id);
+
+                let item =parent.data().item;
+                $("#txtEditAddress").val(item.address);
+                $("#txtEditMobile").val(item.mobile);
+                $("#txtEditPhone").val(item.phone);
+                $("#txtEditPostalCode").val(item.postal_code);
+                app.popup.open(".editAddressPop");
+            });
+        });
+
+
+    </script>
+{% endblock %}

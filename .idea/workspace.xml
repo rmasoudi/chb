@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="33c0de0f-4ca5-4a09-a225-aa4f6b3c57e3" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1czL2hr7AHtBKjvtb6WkOWkHEzB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/js" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/css/fonts" />
+      <recent name="$PROJECT_DIR$/css/webfonts" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/css" />
+      <recent name="$PROJECT_DIR$/img" />
+      <recent name="$PROJECT_DIR$/css/fonts" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33c0de0f-4ca5-4a09-a225-aa4f6b3c57e3" name="Default Changelist" comment="" />
+      <created>1591526269995</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591526269995</updated>
+      <workItem from="1591526271310" duration="4406000" />
+      <workItem from="1591581848205" duration="29819000" />
+      <workItem from="1591667920545" duration="11710000" />
+      <workItem from="1591754104953" duration="16330000" />
+      <workItem from="1591840809685" duration="1854000" />
+      <workItem from="1592013365931" duration="581000" />
+      <workItem from="1592039879094" duration="737000" />
+      <workItem from="1592041503502" duration="232000" />
+      <workItem from="1592042539458" duration="6993000" />
+      <workItem from="1592099928450" duration="12603000" />
+      <workItem from="1592186119953" duration="13381000" />
+      <workItem from="1592753609153" duration="3739000" />
+      <workItem from="1592791563739" duration="5184000" />
+      <workItem from="1592799047122" duration="841000" />
+      <workItem from="1592878170589" duration="9331000" />
+      <workItem from="1593505449346" duration="11538000" />
+      <workItem from="1593568645201" duration="7160000" />
+      <workItem from="1593580300978" duration="20721000" />
+      <workItem from="1593654748113" duration="11283000" />
+      <workItem from="1593828410099" duration="3356000" />
+      <workItem from="1594265075415" duration="16699000" />
+      <workItem from="1594434112328" duration="3419000" />
+      <workItem from="1594439269661" duration="4293000" />
+      <workItem from="1594453005942" duration="11271000" />
+      <workItem from="1594519071089" duration="11914000" />
+      <workItem from="1594606975301" duration="8642000" />
+      <workItem from="1594691510612" duration="8266000" />
+      <workItem from="1595643046687" duration="601000" />
+      <workItem from="1595644403615" duration="599000" />
+      <workItem from="1595646697769" duration="2387000" />
+      <workItem from="1595729452373" duration="2325000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="642" y="328" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591674643661">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="642" y="328" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050@0.0.1920.1050" timestamp="1591674643661" />
+    <state x="694" y="272" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591676327801">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="694" y="272" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1591676327801" />
+    <state x="857" y="306" key="FileChooserDialogImpl" timestamp="1594608053478">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="857" y="306" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1594608053478" />
+    <state x="637" y="262" width="645" height="526" key="find.popup" timestamp="1595647936315">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="637" y="262" width="645" height="526" key="find.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1595647936315" />
+    <state x="48" y="516" width="718" height="523" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1594608075626">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="48" y="516" width="718" height="523" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1594608075626" />
+  </component>
+</project>
