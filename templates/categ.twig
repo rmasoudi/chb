@@ -81,6 +81,8 @@
 {% block scripts %}
 
     <script type="text/javascript">
+        rangeFilters=[];
+        valueFilters=[];    
         $(document).ready(function () {
             $("#filterFab").removeClass("hidden");
             loadFilterPanel();
@@ -114,11 +116,20 @@
             let from = range.value[0];
             let to = range.value[1];
             let id = $("#categTitle").data().id;
-            let url = "filter-products?sort_field=" + field + "&sort_direction=" + direction + "&min_price=" + from + "&max_price=" + to + "&categ_id=" + id;
+            let data={
+                sort_field:field,
+                sort_direction:direction,
+                min_price:from,
+                max_price:to,
+                categ_id:id,
+                value_filters:valueFilters,
+                range_filters:rangeFilters
+            };
             app.preloader.show();
             $.ajax({
-                type: "GET",
-                url: url,
+                type: "POST",
+                url: "filter-products",
+                data:data,
                 success: function (products) {
                     app.preloader.hide();
                     $("#productContainer").html("");
@@ -134,7 +145,7 @@
 
         function getProductItem(product) {
             let el = $("<div class='col-50 small-33 medium-25 large-20' style='margin-bottom: 40px;'></div>");
-            let a = $("<a class='external' href='" + product.name.replaceAll(" ", "-") + "-" + product.id + "-htm'></a>");
+            let a = $("<a class='external' href='" + product.name.replace(/ /g, "-") + "-" + product.id + "-htm'></a>");
             let div = $("<div class='categItem'></div>");
             let img = $("<img alt='" + product.name + "' title='" + product.name + "' class='categ-list-image swiper-lazy' src='home/" + product.name + "-" + product.image_id + "-jpg'/>");
             let name = $("<figcaption class='centerText productTitle'>" + product.name + "</figcaption>");
@@ -166,25 +177,32 @@
                                 label += " (" + group[0].unit + ")";
                             }
                             let title = $("<div class='block-title'>" + label + "</div>");
-                            let block = $("                                    <div class=\"field-filter-slider range-slider range-slider-init\"\n" +
+                            let range = $("                                    <div class=\"field-filter-slider range-slider range-slider-init\"\n" +
                                 "                                         data-dual=\"true\"\n" +
+                                "                                         data-scale=\"true\"\n" +
+                                "                                         data-scale-steps=\"1\"\n" +
                                 "                                         data-min=\"" + group[0].min_value + "\"\n" +
                                 "                                         data-max=\"" + group[0].max_value + "\"\n" +
                                 "                                         data-step=\"1\"\n" +
                                 "                                         data-value-left=\"" + group[0].min_value + "\"\n" +
                                 "                                         data-value-right=\"" + group[0].max_value + "\"\n" +
                                 "                                      data-label=\"true\"></div>");
-                            $("#filterPanel").append(title);
-                            $("#filterPanel").append(block);
+                            let block=$("<div class='block block-strong'></div>");    
+                            block.append(range);
+                            let li=$("<li data-id='"+group[0].id+"' data-type='"+group[0].type+"' data-min='"+group[0].min_value+"' data-max='"+group[0].max_value+"'></li>");    
+                            li.append(title);
+                            li.append(block);
+                            $("#filterPanel").append(li);
                             app.range.create({
-                                el: block
+                                el: range
                             });
+                            
                         } else if (group[0].type === 2) {
                             let label = group[0].name;
                             if (group[0].unit) {
                                 label += " (" + group[0].unit + ")";
                             }
-                            let a = $("<a class='item-link smart-select smart-select-init' data-open-in='sheet'></a>");
+                            let a = $("<a class='item-link smart-select'></a>");
                             let select = $("<select name='" + group[0].name + "' multiple></select>");
                             for (let i = 0; i < group.length; i++) {
                                 let option = $("<option value='" + group[i].value_id + "'>" + group[i].value + "</option>");
@@ -193,12 +211,46 @@
                             let other = $("<div class='item-content'><div class='item-inner'><div class='item-title'>" + group[0].name + "<div><div><div>");
                             a.append(select);
                             a.append(other);
-                            $("#filterPanel").append(a);
-                            app.range.create({
-                                el: block
+                            app.smartSelect.create({
+                                el: a,
+                                routableModals:false,
+                                openIn:"sheet"
                             });
+
+                            let li=$("<li data-id='"+group[0].id+"' data-type='"+group[0].type+"'></li>");    
+                            li.append(a);
+                            $("#filterPanel").append(li);
                         }
                     });
+                    let btn=$("<button class='button button-active button-outline' style='width: 90%;margin-right: auto;margin-left: auto;'>اعمال فیلتر</button>");
+                    btn.click(function(){
+                        let items= $("#filterPanel").find("li");
+                        rangeFilters=[];
+                        valueFilters=[];
+                        for(let i=0;i<items.length;i++){
+                            let item=$(items[i]);
+                            let id= item.data().id;
+                            let type= item.data().type;
+                            if(type===1){
+                                 let min= item.data().min;
+                                 let max= item.data().max;
+                                 let range = app.range.get(item.find(".range-slider"));
+                                 let from = range.value[0];
+                                 let to = range.value[1];
+                                 if(min!==from || max!==to){
+                                     rangeFilters.push({id:id,type:type,from:from,to:to});
+                                 }
+                            }
+                            else if (type==2){
+                                let select= app.smartSelect.get(item.find(".smart-select"));
+                                if(select.getValue().length>0){
+                                     valueFilters.push({id:id,type:type,values:select.getValue().join(",")});
+                                }
+                            }
+                        }
+                        refreshProducts();
+                    });
+                    $("#filterPanel").append(btn);
                 },
                 error: function (response) {
                     app.preloader.hide();

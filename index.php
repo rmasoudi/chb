@@ -205,8 +205,6 @@ $app->get('/{image_type}/{image_name}-{image_id}-jpg', function (Request $reques
 $app->get('/{categ_name}-{categ_id}-html', function (Request $request, Response $response, $args) use ($twig, $app) {
     $categ_name = trim(urldecode($args["categ_name"]));
     $categ_id = trim(urldecode($args["categ_id"]));
-    $sort_field = $request->getQueryParams()["sort_field"];
-    $sort_direction = $request->getQueryParams()["sort_direction"];
     $conn = getConnection();
     global $settings;
     loadSettings($conn);
@@ -258,17 +256,24 @@ $app->get('/categ_fields', function (Request $request, Response $response, $args
 
 })->setName('categ_fields');
 
-$app->get('/filter-products', function (Request $request, Response $response, $args) use ($twig, $app) {
-    $params=$request->getQueryParams();
-    $categ_id = $params["categ_id"];
-    $sort_field = $params["sort_field"];
-    $sort_direction = $params["sort_direction"];
-    $min_price = $params["min_price"];
-    $max_price = $params["max_price"];
+$app->post('/filter-products', function (Request $request, Response $response, $args) use ($twig, $app) {
+    $categ_id = $_POST["categ_id"];
+    $sort_field = $_POST["sort_field"];
+    $sort_direction = $_POST["sort_direction"];
+    $min_price = $_POST["min_price"];
+    $max_price = $_POST["max_price"];
+    $rangeFilters=array();
+    $valueFilters=array();
+    if(isset($_POST["range_filters"])){
+        $rangeFilters = $_POST["range_filters"];
+    }
+    if(isset($_POST["value_filters"])){
+        $valueFilters = $_POST["value_filters"];
+    }
     $conn = getConnection();
     global $settings;
     loadSettings($conn);
-    $res=filterCategoryProducts($conn,$categ_id,$sort_field,$sort_direction,$min_price,$max_price);
+    $res=filterCategoryProducts($conn,$categ_id,$sort_field,$sort_direction,$min_price,$max_price,$rangeFilters,$valueFilters);
     $conn->close();
     return $response->withJson($res);
 })->setName('filter-products');
@@ -545,13 +550,25 @@ function getRelatedProducts($conn,$categ_id){
     return$list;
 }
 
-function filterCategoryProducts($conn,$categ_id,$sort_field,$sort_direction,$min_price,$max_price){
+function filterCategoryProducts($conn,$categ_id,$sort_field,$sort_direction,$min_price,$max_price,$rangeFilters,$valueFilters){
     $list=array();
     if(($sort_direction!="asc" && $sort_direction!="desc")||($sort_field!="sell_price" && $sort_field!="buy_count" && $sort_field!="id")){
         $sort_field="id";
         $sort_direction="desc";
     }
-    $stmt = $conn->prepare("SELECT product.*,image.id AS image_id FROM product LEFT JOIN image ON image.product_id=product.id AND cover=1 WHERE disabled=0 AND sell_price>=? AND sell_price<=? AND (category_id=? OR category_id IN (SELECT child_id FROM category_children WHERE id=?)) ORDER BY ".$sort_field." ".$sort_direction);
+    $filterPart="";
+    if(!empty( $valueFilters)){
+        foreach($valueFilters as $item){
+            $filterPart=$filterPart."AND product.id IN (SELECT product_field.product_id FROM product_field WHERE product_field.field_id=".$item["id"]." AND product_field.value_id IN (".$item["values"].")) ";
+        }
+    }
+    if(!empty( $rangeFilters)){
+        foreach($rangeFilters as $item){
+            $filterPart=$filterPart."AND product.id IN (SELECT product_field.product_id FROM product_field WHERE product_field.field_id=".$item["id"]." AND product_field.numeric_value>=".$item["from"]." AND product_field.numeric_value<=".$item["to"].") ";
+        }
+    }
+    $query="SELECT product.*,image.id AS image_id FROM product LEFT JOIN image ON image.product_id=product.id AND cover=1 WHERE disabled=0 AND sell_price>=? AND sell_price<=? AND (category_id=? OR category_id IN (SELECT child_id FROM category_children WHERE id=?)) ".$filterPart." ORDER BY ".$sort_field." ".$sort_direction;
+    $stmt = $conn->prepare($query);
     $id=intval($categ_id);
     $stmt->bind_param("iiii",$min_price,$max_price,$id,$id);
     $stmt->execute();

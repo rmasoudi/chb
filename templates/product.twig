@@ -13,7 +13,7 @@
 {% block scripts %}
     <script type="text/javascript">
         $(document).ready(function () {
-            imageArray = JSON.parse("{{ image_list | json_encode() }}".replaceAll("&quot;", "\""));
+            imageArray = JSON.parse("{{ image_list | json_encode() }}".replace(/&quot;/g, "\""));
             photoBrowser = app.photoBrowser.create({
                 photos: imageArray,
                 navbarOfText: "از",
