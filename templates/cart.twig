@@ -10,8 +10,14 @@
 
         </div>
         <div class="block">
-            <button id="btnCartBuy" class="button button-active button-outline"
-                    style="width: 90%;margin-right: auto;margin-left: auto;">ادامه فرایند خرید
+            <button id="btnCartBuy" class="button button-active button-outline" {% if user %}data-login="true"{%endif%}
+                    style="width: 90%;margin-right: auto;margin-left: auto;">
+                {%if user %}
+                    ادامه فرایند خرید
+                {%else%}
+                        ورود به سیستم و ادامه
+                {%endif%}
+
             </button>
             <br/>
             <br/>

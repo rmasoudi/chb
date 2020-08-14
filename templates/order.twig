@@ -1,0 +1,38 @@
+{% extends 'base.twig' %}
+{% block page_desc %}{{ meta_desc }}{% endblock %}
+{% block page_keywords %}
+    {% if keywords %}
+        {{ keywords }}
+    {% else %}
+        {{ name|replace({' ':','}) }}
+    {% endif %}
+{% endblock %}
+{% block title %}{{ name }}{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="block-title block-title-small">سبد خرید</h1>
+    <div class="list media-list">
+        <ul id="orderItems">
+
+        </ul>
+    </div>
+    <h1 class="block-title block-title-small">روش ارسال</h1>
+    <div class="block block-strong inset">
+        <p> از طریق باربری</p>
+        <p>هزینه ارسال زمان تحویل کالا بر عهده مشتری است</p>
+    </div>
+
+    <div class="block" id="productTotal">
+
+    </div>
+{% endblock %}
+{% block scripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            updateCart($("#orderItems"), $("#productTotal"));
+        });
+    </script>
+{% endblock %}

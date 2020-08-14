@@ -48,6 +48,20 @@ $app->get('/', function (Request $request, Response $response, $args) use ($twig
     return;
 })->setName('home');
 
+$app->get('/order', function (Request $request, Response $response, $args) use ($twig, $app) {
+    $conn = getConnection();
+    global $settings;
+    loadSettings($conn);
+    $response->getBody()->write($twig->render('order.twig', [
+        "common" =>$settings,
+        "tree"=>getTree($conn),
+        "user"=>getCurrentUser()
+
+    ]));
+    $conn->close();
+    return;
+})->setName('order');
+
 $app->get('/password', function (Request $request, Response $response, $args) use ($twig, $app) {
     if (!isLogged()) {
                 return $response->withRedirect($app->getContainer()->get('router')->pathFor('error',[],[
@@ -324,7 +338,8 @@ $app->post('/dologin', function (Request $request, Response $response, $args) us
         $password = $_POST["password"];
         $conn = getConnection();
         $stmt = $conn->prepare("SELECT * FROM user WHERE email=? AND password=?");
-        $stmt->bind_param("ss", $email, hashPassword($password));
+        $password=hashPassword($password);
+        $stmt->bind_param("ss", $email,$password );
         $stmt->execute();
         $result = $stmt->get_result();
         if (mysqli_num_rows($result) != 0) {
