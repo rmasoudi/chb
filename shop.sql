@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Aug 01, 2020 at 02:31 AM
--- Server version: 5.7.30-0ubuntu0.18.04.1
--- PHP Version: 7.2.24-0ubuntu0.18.04.6
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 26, 2020 at 01:06 PM
+-- Server version: 5.7.26
+-- PHP Version: 7.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,14 +28,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `address`
 --
 
-CREATE TABLE `address` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE IF NOT EXISTS `address` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `postal_code` varchar(12) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(12) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mobile` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `customer_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `address`
@@ -69,13 +73,15 @@ INSERT INTO `address` (`id`, `address`, `postal_code`, `phone`, `mobile`, `custo
 -- Table structure for table `category`
 --
 
-CREATE TABLE `category` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `meta_desc` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `keywords` varchar(600) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `parent` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `parent` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `category`
@@ -118,9 +124,11 @@ INSERT INTO `category` (`id`, `name`, `meta_desc`, `keywords`, `parent`) VALUES
 -- Table structure for table `category_children`
 --
 
-CREATE TABLE `category_children` (
+DROP TABLE IF EXISTS `category_children`;
+CREATE TABLE IF NOT EXISTS `category_children` (
   `id` bigint(20) NOT NULL,
-  `child_id` bigint(20) NOT NULL
+  `child_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`,`child_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -158,9 +166,11 @@ INSERT INTO `category_children` (`id`, `child_id`) VALUES
 -- Table structure for table `city`
 --
 
-CREATE TABLE `city` (
-  `id` bigint(20) NOT NULL,
-  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+DROP TABLE IF EXISTS `city`;
+CREATE TABLE IF NOT EXISTS `city` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -169,16 +179,18 @@ CREATE TABLE `city` (
 -- Table structure for table `field`
 --
 
-CREATE TABLE `field` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `field`;
+CREATE TABLE IF NOT EXISTS `field` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   `unit` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `filterable` bit(1) NOT NULL DEFAULT b'0',
   `min_value` bigint(20) DEFAULT NULL,
-  `max_value` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `max_value` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `field`
@@ -208,11 +220,13 @@ INSERT INTO `field` (`id`, `name`, `position`, `unit`, `type`, `filterable`, `mi
 -- Table structure for table `field_value`
 --
 
-CREATE TABLE `field_value` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `field_value`;
+CREATE TABLE IF NOT EXISTS `field_value` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `field_id` bigint(20) NOT NULL,
-  `value` varchar(400) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `value` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `field_value`
@@ -233,12 +247,14 @@ INSERT INTO `field_value` (`id`, `field_id`, `value`) VALUES
 -- Table structure for table `image`
 --
 
-CREATE TABLE `image` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE IF NOT EXISTS `image` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_id` bigint(20) NOT NULL,
   `position` int(11) NOT NULL DEFAULT '1',
-  `cover` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `cover` bit(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `image`
@@ -463,14 +479,18 @@ INSERT INTO `image` (`id`, `product_id`, `position`, `cover`) VALUES
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `code` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `paid` bigint(20) NOT NULL,
   `total` bigint(20) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `producer_id` bigint(20) NOT NULL
+  `producer_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tyrt` (`customer_id`),
+  KEY `styrt` (`producer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -479,9 +499,13 @@ CREATE TABLE `orders` (
 -- Table structure for table `order_product`
 --
 
-CREATE TABLE `order_product` (
+DROP TABLE IF EXISTS `order_product`;
+CREATE TABLE IF NOT EXISTS `order_product` (
   `order_id` bigint(20) NOT NULL,
-  `product_id` bigint(20) NOT NULL
+  `product_id` bigint(20) NOT NULL,
+  `amount` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`order_id`,`product_id`),
+  KEY `sdfsd` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -490,8 +514,9 @@ CREATE TABLE `order_product` (
 -- Table structure for table `product`
 --
 
-CREATE TABLE `product` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `buy_price` bigint(11) NOT NULL,
   `sell_price` bigint(11) NOT NULL,
@@ -502,8 +527,10 @@ CREATE TABLE `product` (
   `category_id` bigint(20) NOT NULL,
   `meta_desc` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `disabled` bit(1) NOT NULL DEFAULT b'0',
-  `buy_count` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `buy_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_product_category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `product`
@@ -631,12 +658,15 @@ INSERT INTO `product` (`id`, `name`, `buy_price`, `sell_price`, `producer`, `cod
 -- Table structure for table `product_field`
 --
 
-CREATE TABLE `product_field` (
+DROP TABLE IF EXISTS `product_field`;
+CREATE TABLE IF NOT EXISTS `product_field` (
   `product_id` bigint(20) NOT NULL,
   `field_id` bigint(20) NOT NULL,
   `value` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `numeric_value` bigint(20) DEFAULT NULL,
-  `value_id` bigint(20) DEFAULT NULL
+  `value_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`field_id`,`product_id`),
+  KEY `fk_product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1312,10 +1342,12 @@ INSERT INTO `product_field` (`product_id`, `field_id`, `value`, `numeric_value`,
 -- Table structure for table `settings`
 --
 
-CREATE TABLE `settings` (
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
   `param` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`param`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1351,9 +1383,11 @@ INSERT INTO `settings` (`param`, `value`, `title`) VALUES
 -- Table structure for table `state`
 --
 
-CREATE TABLE `state` (
-  `id` bigint(20) NOT NULL,
-  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+DROP TABLE IF EXISTS `state`;
+CREATE TABLE IF NOT EXISTS `state` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1362,8 +1396,9 @@ CREATE TABLE `state` (
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL,
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `fname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `lname` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1373,8 +1408,9 @@ CREATE TABLE `user` (
   `is_emp` bit(1) NOT NULL DEFAULT b'0',
   `is_producer` bit(1) NOT NULL DEFAULT b'0',
   `zp_code` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `change_pass_hash` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `change_pass_hash` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
@@ -1382,7 +1418,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `fname`, `lname`, `email`, `password`, `mobile`, `is_admin`, `is_emp`, `is_producer`, `zp_code`, `change_pass_hash`) VALUES
 (1, 'John', 'DOE', 'pub@prestashop.com', '134e9c7b20e1ab8a4a1f8f839de8cdc6', '', b'0', b'0', b'0', NULL, NULL),
-(2, 'بیژن', 'مرتضوی', 'r.masoudi@chmail.ir', 'a33cceb47f9b621fd9e42e43030504f2', '09367270443', b'0', b'0', b'0', NULL, NULL),
+(2, 'بیژن', 'مرتضوی', 'r.masoudi@chmail.ir', 'b066ea5459d148f3486de7a8f4e866ee', '09367270443', b'0', b'0', b'0', NULL, NULL),
 (3, 'عبدالله', 'عبداللهی', 'a.yazdaniperayi@gmail.com', 'a8f5362348f7b9e3c6baf0e2d1fe2ddf', '09129999999', b'0', b'0', b'0', NULL, NULL),
 (4, 'Faeze', 'jafari', 'missjfrii123@gmail.com', '143bf5fb1b72983e713cc9624e8f88ef', '', b'0', b'0', b'0', NULL, NULL),
 (5, 'Faeze', 'jafari', 'faezejfri123@gmail.com', '143bf5fb1b72983e713cc9624e8f88ef', '', b'0', b'0', b'0', NULL, NULL),
@@ -1426,153 +1462,6 @@ INSERT INTO `user` (`id`, `fname`, `lname`, `email`, `password`, `mobile`, `is_a
 (44, 'fghfg', 'fghfg', 'hfghfg', '1223cac9d04a24277aa34462950d4410', 'fghfgh', b'0', b'0', b'0', NULL, NULL);
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `category_children`
---
-ALTER TABLE `category_children`
-  ADD PRIMARY KEY (`id`,`child_id`);
-
---
--- Indexes for table `city`
---
-ALTER TABLE `city`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `field`
---
-ALTER TABLE `field`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `field_value`
---
-ALTER TABLE `field_value`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `image`
---
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tyrt` (`customer_id`),
-  ADD KEY `styrt` (`producer_id`);
-
---
--- Indexes for table `order_product`
---
-ALTER TABLE `order_product`
-  ADD PRIMARY KEY (`order_id`,`product_id`),
-  ADD KEY `sdfsd` (`product_id`);
-
---
--- Indexes for table `product`
---
-ALTER TABLE `product`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_product_category` (`category_id`);
-
---
--- Indexes for table `product_field`
---
-ALTER TABLE `product_field`
-  ADD PRIMARY KEY (`field_id`,`product_id`),
-  ADD KEY `fk_product_id` (`product_id`);
-
---
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`param`);
-
---
--- Indexes for table `state`
---
-ALTER TABLE `state`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `address`
---
-ALTER TABLE `address`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
---
--- AUTO_INCREMENT for table `city`
---
-ALTER TABLE `city`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `field`
---
-ALTER TABLE `field`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
---
--- AUTO_INCREMENT for table `field_value`
---
-ALTER TABLE `field_value`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `image`
---
-ALTER TABLE `image`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `product`
---
-ALTER TABLE `product`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
---
--- AUTO_INCREMENT for table `state`
---
-ALTER TABLE `state`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
---
 -- Constraints for dumped tables
 --
 
@@ -1602,6 +1491,7 @@ ALTER TABLE `product`
 ALTER TABLE `product_field`
   ADD CONSTRAINT `fk_field_id` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`),
   ADD CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
