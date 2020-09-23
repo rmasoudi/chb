@@ -1,0 +1,35 @@
+{% extends 'base.twig' %}
+{% block page_desc %}{{ meta_desc }}{% endblock %}
+{% block page_keywords %}
+    {% if keywords %}
+        {{ keywords }}
+    {% else %}
+        {{ name|replace({' ':','}) }}
+    {% endif %}
+{% endblock %}
+{% block title %}خطای پرداخت{% endblock %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="block-title block-title-medium">خطای پرداخت</h1>
+    <div class="block inset">
+        <div style="display: flex;justify-content: center;">
+            خطا در پرداخت
+            <br/>
+            کد خطا: {{ error }}
+        </div>
+        <div style="display: flex;justify-content: center;">
+            <a style="width: 200px;" href="./" class="external button button-active">بازگشت به صفحه اصلی</a>
+        </div>        
+
+
+
+    </div>
+{% endblock %}
+{% block scripts %}
+
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

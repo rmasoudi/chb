@@ -13,26 +13,97 @@
 
 {% block content %}
     <h1 class="block-title block-title-small">سبد خرید</h1>
-    <div class="list media-list">
+    <div class="list media-list inset">
         <ul id="orderItems">
 
         </ul>
     </div>
+    <div class="block block-strong inset">
+        <div class="row">
+            <div class="col-50">
+                <div id="productTotal"></div>
+            </div>
+            <div class="col-50">
+            </div>
+        </div>
+    </div>
+
+
     <h1 class="block-title block-title-small">روش ارسال</h1>
     <div class="block block-strong inset">
         <p> از طریق باربری</p>
         <p>هزینه ارسال زمان تحویل کالا بر عهده مشتری است</p>
     </div>
 
-    <div class="block" id="productTotal">
-
+    <h1 class="block-title block-title-small"> آدرس</h1>
+    <div class="block block-strong inset">
+        <p id="lblAddress"></p>
+        <a id="btnAddress" href="address?redirect=order"style="width:100px;" class="external button button-active">انتخاب آدرس</a>
     </div>
+    <div class="block">
+        <div id="warn"></div>
+        <form method="post" action="save_order">
+            <input id="txtOrders" name="orders" type="text" style="display: none;">
+            <button type="submit" class="button button-active padding-horizontal" style="float: left;width: 100px;">پرداخت</button>
+        </form>
+        
+    </div>
+
+
+
 {% endblock %}
 {% block scripts %}
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             updateCart($("#orderItems"), $("#productTotal"));
+            var address = getAddress();
+            if (address !== null) {
+                $("#btnAddress").html("تغییر آدرس");
+                $("#lblAddress").html(address.address);
+            }
+            var pc = getProducerCount();
+            if (pc > 1) {
+                $("#warn").html("شما در حال خرید از " + pc + " فراهم کننده مختلف هستید و سفارش شما تبدیل به " + pc + " سفارش جداگانه می شود.");
+            }
+            prepareOrder();
         });
+
+        function prepareOrder() {
+            var cart = getCart();
+            if (Object.keys(cart).length === 0) {
+                app.dialog.alert("هیچ محصولی در سبد شما نیست", "");
+                return;
+            }
+            var address = getAddress();
+            if (address === null) {
+                app.dialog.alert("لطفا آدرس را تعیین کنید", "");
+                return;
+            }
+            var map = {};
+            for (var key in cart) {
+                var product = cart[key];
+                var item = map[product.producer];
+                if (item === undefined) {
+                    map[product.producer] = [];
+                }
+                map[product.producer].push(product);
+            }
+            var orders = [];
+            for (var producer in map) {
+                var products = map[producer];
+                var prods = [];
+                for (var i = 0; i < products.length; i++) {
+                    prods.push({id: products[i].id, amount: products[i].amount});
+                }
+                var ordItem = {
+                    producer_id: parseInt(producer),
+                    address_id: address.id,
+                    products: prods
+                };
+                orders.push(ordItem);
+            }
+            $("#txtOrders").val(JSON.stringify(orders));
+        }
     </script>
 {% endblock %}

@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+    <input id="txtRedirect" value="{{ redirect }}" style="display: none;"/>
     <div class="block inset">
         <div class="block">
             <p>برای ویرایش آدرس آن را به چپ بکشید.</p>
@@ -11,7 +12,7 @@
         <div class="list media-list">
             <ul>
                 {% for address in addresses %}
-                    <li data-id="{{ address.id }}" data-item="{{ address| json_encode() }}" class="swipeout deleted-callback">
+                    <li data-id="{{ address.id }}" data-item="{{ address| json_encode() }}" class="selectable swipeout deleted-callback">
                         <div class="item-content swipeout-content">
                             <div class="item-inner">
                                 <div class="item-subtitle">{{ address.address }}</div>
@@ -28,6 +29,9 @@
                                         کد پستی: {{ address.postal_code }}
                                     </div>
                                 {% endif %}
+                                {% if redirect %}
+                                    <button onclick="selectAddress({{ address| json_encode() }});" class="button button-active" style="width: 100px;float: left;">انتخاب</button>
+                                {% endif %}                                
                                 <br/>
                             </div>
                         </div>
@@ -40,7 +44,7 @@
             </ul>
         </div>
     </div>
-    <div class="fab" style="position: absolute;right: 5px; bottom: 55px;">
+    <div class="fab" style="position: fixed;right: 5px; bottom: 55px;">
         <a href="#" class="link popup-open" data-popup=".newAddressPop">
             <i class="fas fa-plus icon socialIcon"></i>
         </a>
@@ -92,8 +96,8 @@
                         </ul>
                     </div>
                     <div class="row">
-                        <div class="col-75 errorMessage" id="registerMessage"></div>
-                        <div class="col-25">
+                        <div class="col-50 errorMessage" id="registerMessage"></div>
+                        <div class="col-50">
                             <div id="btnAddAddress" class="button button-active">ثبت آدرس</div>
                         </div>
                     </div>
@@ -231,7 +235,14 @@
                 app.popup.open(".editAddressPop");
             });
         });
-
+        function selectAddress(address){
+            var redirect= $("#txtRedirect").val();
+            if(redirect!==""){
+                setAddress(address);
+                window.location=redirect;
+            }
+            
+        }
 
     </script>
 {% endblock %}

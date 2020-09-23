@@ -9,7 +9,7 @@ socket = null;
 loadingImage = false;
 app = null;
 $$ = null;
-$(document).ready(function() {
+$(document).ready(function () {
     $$ = Dom7;
     app = new Framework7({
         root: '#app',
@@ -24,7 +24,7 @@ $(document).ready(function() {
             hideOnPageScroll: true
         }
     });
-    loginPop=app.popup.create({
+    loginPop = app.popup.create({
         el: '.loginPop'
     });
     app.swiper.create('.home-slider', {
@@ -74,12 +74,11 @@ $(document).ready(function() {
         max: 15,
         value: 1
     });
-    $("#btnCartBuy").click(function() {
+    $("#btnCartBuy").click(function () {
         var login = $("#btnCartBuy").data().login;
         if (login) {
             window.location = "order";
-        }
-        else {
+        } else {
             loginPop.open();
         }
     });
@@ -94,13 +93,13 @@ $(document).ready(function() {
         updateInputValueOnSelect: false,
         limit: 8,
         on: {
-            change: function(value) {
+            change: function (value) {
                 var id = value[0].id;
                 var name = value[0].name;
                 window.location = name.replaceAll(" ", "-") + "-" + id + "-htm";
             }
         },
-        source: function(query, render) {
+        source: function (query, render) {
             var autocomplete = this;
             var results = [];
             if (query.length === 0) {
@@ -112,7 +111,7 @@ $(document).ready(function() {
                 url: 'search/' + query,
                 method: 'GET',
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     for (var i = 0; i < data.length; i++) {
                         if (data[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0)
                             results.push(data[i]);
@@ -123,72 +122,72 @@ $(document).ready(function() {
             });
         }
     });
-    $$(".search-sheet").on("sheet:open", function() {
+    $$(".search-sheet").on("sheet:open", function () {
         $("#query").focus();
     });
-    $$(".loginPop").on("popup:open", function() {
+    $$(".loginPop").on("popup:open", function () {
         $("#loginBlock").removeClass("hidden");
         $("#registerBlock").addClass("hidden");
         $("#forgetBlock").addClass("hidden");
         $("#txtLoginEmail").focus();
     });
-    $$(".panel-left-1").on("panel:open", function() {
+    $$(".panel-left-1").on("panel:open", function () {
         updateCart($("#cartItems"), $("#cartTotal"));
     });
-    $("#btnGoRegister").click(function() {
+    $("#btnGoRegister").click(function () {
         $("#loginBlock").addClass("hidden");
         $("#forgetBlock").addClass("hidden");
         $("#registerBlock").removeClass("hidden");
         $("#txtFname").focus();
     });
-    $("#btnGoForget").click(function() {
+    $("#btnGoForget").click(function () {
         $("#loginBlock").addClass("hidden");
         $("#forgetBlock").removeClass("hidden");
         $("#registerBlock").addClass("hidden");
         $("#txtForgetEmail").focus();
     });
-    $(".backLogin").click(function() {
+    $(".backLogin").click(function () {
         $("#loginBlock").removeClass("hidden");
         $("#registerBlock").addClass("hidden");
         $("#forgetBlock").addClass("hidden");
         $("#txtLoginEmail").focus();
     });
-    $("#btnLogin").click(function() {
+    $("#btnLogin").click(function () {
         $.ajax({
             type: "POST",
             url: "dologin",
             data: $("#loginForm").serialize(),
-            success: function(response) {
+            success: function (response) {
                 location.reload();
             },
-            error: function(response) {
+            error: function (response) {
                 $("#loginMessage").html(response.responseJSON.error);
             }
         });
     });
-    $("#btnRegister").click(function() {
+    $("#btnRegister").click(function () {
         $.ajax({
             type: "POST",
             url: "save_user",
             data: $("#registerForm").serialize(),
-            success: function(response) {
+            success: function (response) {
                 location.reload();
             },
-            error: function(response) {
+            error: function (response) {
                 $("#registerMessage").html(response.responseJSON.error);
             }
         });
     });
-    $("#btnForget").click(function() {
+    $("#btnForget").click(function () {
         $.ajax({
             type: "POST",
             url: "forget",
             data: $("#forgetForm").serialize(),
-            success: function(response) {
+            success: function (response) {
                 app.popup.get(".loginPop").close();
                 notify("لینک تغییر رمز به ایمیل شما ارسال شد.")
             },
-            error: function(response) {
+            error: function (response) {
                 $("#forgetMessage").html(response.responseJSON.error);
             }
         });
@@ -232,8 +231,7 @@ function updateCount() {
         $("#cartCount").html(sum.toString());
         $("#cartCount").removeClass("hidden");
         $("#cartCount").addClass("blink");
-    }
-    else {
+    } else {
         $("#cartCount").addClass("hidden");
         $("#cartCount").removeClass("blink");
     }
@@ -244,6 +242,17 @@ function getCart() {
         return {};
     }
     return JSON.parse(localStorage.getItem("cart"));
+}
+
+function setAddress(address) {
+    localStorage.setItem("address", JSON.stringify(address));
+}
+
+function getAddress(address) {
+    if (localStorage.getItem("address") === null || localStorage.getItem("address") === undefined) {
+        return null;
+    }
+    return JSON.parse(localStorage.getItem("address"));
 }
 
 
@@ -280,7 +289,7 @@ function updateCart(cartContainer, totalContainer) {
         app.stepper.create({
             el: stepper,
             on: {
-                change: function(cc) {
+                change: function (cc) {
                     var id = $(cc.el).parent().data().productId;
                     if (cc.value > 0) {
                         changeProductCount(id, cc.value);
@@ -302,6 +311,15 @@ function updateCart(cartContainer, totalContainer) {
     }
 }
 
+function getProducerCount() {
+    var cart = getCart();
+    var set = new Set()
+    for (var key in cart) {
+        set.add(cart[key].producer);
+    }
+    return set.size;
+}
+
 function formatPrice(val) {
     return val.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 }
@@ -312,7 +330,7 @@ function notify(message) {
         closeTimeout: 2500,
         closeOnClick: true,
         on: {
-            close: function() {
+            close: function () {
             }
         }
 
