@@ -61,6 +61,44 @@ $app->get('/order', function (Request $request, Response $response, $args) use (
     return;
 })->setName('order');
 
+$app->get('/adminp', function (Request $request, Response $response, $args) use ($twig, $app) {
+    $conn = getConnection();
+    global $settings;
+    loadSettings($conn);
+    $response->getBody()->write($twig->render('admin/admin.twig', [
+                "common" => $settings,
+                "user" => getCurrentUser()
+    ]));
+    $conn->close();
+    return;
+})->setName('adminp');
+
+$app->get('/settings', function (Request $request, Response $response, $args) use ($twig, $app) {
+    $conn = getConnection();
+    global $settings;
+    $list = loadSettings($conn);
+
+    $response->getBody()->write($twig->render('admin/settings.twig', [
+                "common" => $settings,
+                "user" => getCurrentUser(),
+                "settings" => $list
+    ]));
+    $conn->close();
+    return;
+})->setName('settings');
+
+$app->post('/save_settings', function (Request $request, Response $response, $args) use ($twig, $app) {
+    $conn = getConnection();
+    $list = loadSettings($conn);
+    foreach ($_POST as $param => $value) {
+        $stmt = $conn->prepare("UPDATE settings SET value=? WHERE param=?");
+        $stmt->bind_param("ss", $value, $param);
+        $stmt->execute();
+    }
+    $conn->close();
+    return $response->withRedirect($app->getContainer()->get('router')->pathFor('settings'));
+})->setName('save_settings');
+
 $app->post('/save_order', function (Request $request, Response $response, $args) use ($twig, $app) {
     if (!isLogged()) {
         return $response->withRedirect($app->getContainer()->get('router')->pathFor('error', [], [
@@ -148,13 +186,11 @@ $app->post('/save_order', function (Request $request, Response $response, $args)
         }
 
         $stmt->close();
-        $payload = array();
-        $payload["wages"] = $additionlData;
         $data = array('merchant_id' => ZARRIN,
             'amount' => $total * 10,
             'callback_url' => 'http://localhost/choobi/verify',
             'description' => 'خرید از فروشگاه',
-            'additional_data' => json_encode($payload, JSON_UNESCAPED_UNICODE)
+            'wages' => $additionlData
         );
         $jsonData = json_encode($data);
         $ch = curl_init('https://api.zarinpal.com/pg/v4/payment/request.json');
@@ -173,7 +209,7 @@ $app->post('/save_order', function (Request $request, Response $response, $args)
         $result = json_decode($result, true);
         curl_close($ch);
         $_SESSION["order_ids"] = $orderIds;
-        $_SESSION["order_amount"] = $total*10;
+        $_SESSION["order_amount"] = $total * 10;
         if ($err) {
             $response->getBody()->write("cURL Error #:" . $err);
             return;
@@ -231,15 +267,14 @@ $app->get('/verify', function (Request $request, Response $response, $args) use 
                         "paycode" => $paycode
             ]));
             return;
-        } 
+        }
         if ($result["data"]['code'] == 101) {
             $response->getBody()->write($twig->render('payerror.twig', [
                         "common" => $settings,
                         "error" => " تراکنش تکراری است. احتمالا صفحه را refresh کرده اید."
             ]));
             return;
-        }
-        else {
+        } else {
             $response->getBody()->write($twig->render('payerror.twig', [
                         "common" => $settings,
                         "error" => $result["error"]['code']
@@ -902,13 +937,16 @@ function groupBy($array, $key) {
 
 function loadSettings($conn) {
     global $settings;
-    $stmt = $conn->prepare("SELECT * FROM settings");
+    $stmt = $conn->prepare("SELECT * FROM settings ORDER BY position");
     $stmt->execute();
     $result = $stmt->get_result();
+    $list = array();
     while ($row = $result->fetch_assoc()) {
         $settings[$row["param"]] = $row["value"];
+        array_push($list, $row);
     }
     $stmt->close();
+    return $list;
 }
 
 function getCurrentUser() {

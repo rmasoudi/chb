@@ -3,21 +3,19 @@
     <div class="page-content">
         <div class="list media-list">
             <ul id="cartItems">
-
             </ul>
         </div>
         <div class="block" id="cartTotal">
-
         </div>
         <div class="block">
-            <button id="btnCartBuy" class="button button-active button-outline" {% if user %}data-login="true"{%endif%}
+            <button id="btnCartBuy" class="button button-active button-outline"
+                    {% if user %}data-login="true"{% endif %}
                     style="width: 90%;margin-right: auto;margin-left: auto;">
-                {%if user %}
+                {% if user %}
                     ادامه فرایند خرید
-                {%else%}
-                        ورود به سیستم و ادامه
-                {%endif%}
-
+                {% else %}
+                    ورود به سیستم و ادامه
+                {% endif %}
             </button>
             <br/>
             <br/>

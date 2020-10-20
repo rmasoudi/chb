@@ -1,0 +1,74 @@
+
+<html>
+    <head>
+        <title>پنل مدیریت {{ app_name }}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="theme-color" content="#2196f3">
+        <link rel="stylesheet" href="css/framework7.bundle.rtl.min.css">
+        <link rel="stylesheet" href="css/fontawesome.min.css">
+        <link rel="stylesheet" href="css/jstree.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div id="app">
+            <div class="panel panel-right panel-right-1 panel-cover" data-swipe-only-close="true">
+                <div class="page-content">
+                    <div class="list links-list">
+                        <ul>
+                            <li>
+                                <a class="external" href="settings">تنظیمات پایه</a>
+                            </li>
+                            <li>
+                                <a href="#">دسته ها</a>
+                            </li>
+                            <li>
+                                <a href="#">محصولات</a>
+                            </li>
+                            <li>
+                                <a href="#">فیلدها</a>
+                            </li>                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="view view-main">
+                <div data-name="home" class="page">
+                    <div id="mainNavbar" class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner sliding">
+                            <div class="left">
+                                <a class="panel-open link" href="#" data-panel=".panel-right-1">
+                                    <div class="fas fa-bars"></div>
+                                </a>
+                            </div>
+                            <div class="right">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toolbar toolbar-bottom">
+                        <div class="toolbar-inner">
+
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        {% block content %}
+                        {% endblock %}
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js" type="text/javascript"></script>
+    <script src="js/underscore-min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="js/jstree.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

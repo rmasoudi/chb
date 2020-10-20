@@ -1,0 +1,29 @@
+{% extends 'admin/admin.twig' %}
+{% block content %}
+    <form method="post" action="save_settings">
+        <div class="list no-hairlines-md">
+            <ul>
+                {% for setting in settings %}
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">{{ setting.title }}</div>
+                            <div class="item-input-wrap">
+                                {% if setting.type=='text' %}
+                                <textarea  name="{{ setting.param }}">{{ setting.value }}</textarea>
+                                {% elseif setting.type=='int' %}
+                                <input  name="{{ setting.param }}" value="{{ setting.value }}" type="number"/>
+                            {% else%}
+                                <input  name="{{ setting.param }}" value="{{ setting.value }}" type="text"/>
+                                {% endif %}
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>                    
+
+                        {% endfor %}
+                        </ul>
+                    </div>    
+                    <br/>
+                    <button type="submit" class="button button-active padding-horizontal" style="float: left;width: 100px;">ثبت</button>
+                </form>
+                {% endblock %}
